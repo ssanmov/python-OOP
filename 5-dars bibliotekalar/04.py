@@ -1,9 +1,16 @@
 import requests
 import json
 
-url = 'https://kudapizza.herokuapp.com/pizzas/'
-html = requests.get(url)
+file_name=  "Pizzas"
 
-obj = json.loads(html.content)
-for product in obj:
-    print(f"\n\nNomi: {product['name_ru']}\nNarxi: {product['price']}")
+response = requests.get("https://kudapizza.herokuapp.com/pizzas/").text
+response_info = json.loads(response)
+pizzas_list =[]
+
+for pizza_info in response_info:
+    pizzas_list.append([pizza_info['name_ru'],pizza_info['price'],pizza_info['image']])
+
+text = json.dumps(pizzas_list, indent=4)
+with open(file_name, "w",encoding='ascii') as file:
+    file.write(text)
+
